@@ -1,7 +1,9 @@
 #include "st75256_impl.h"
 
+#define SPIDEV_MAX_LEN 4096
+
 _st75256_impl_t *_lcd_impl_init(void) {
-    int spi_fd = open(CONFIG_SPIDEV_FILENAME, O_RDWR);
+    int spi_fd = open(CONFIG_SPIDEV_FILENAME, O_RDWR | O_SYNC);
     if(spi_fd < 0) return NULL;
 
     uint32_t spi_mode = 0; // Nothing to be set in default mode.
@@ -109,8 +111,20 @@ st75256_ret_t _lcd_impl_write_data(void *handle, uint8_t *data, uint16_t len) {
         .bits_per_word = 8
     };
 
-    ret = ioctl(impl->spi_fd, SPI_IOC_MESSAGE(1), &data_tr);
-    if(ret < len) return ST75256_ERROR;
+    uint32_t transfer_times = (len / SPIDEV_MAX_LEN) + ((len % SPIDEV_MAX_LEN != 0) ? 1 : 0); // Linux SPI can transfer some bytes each time.
+    for(uint32_t i = 0; i < transfer_times; i++) {
+        if(i == transfer_times - 1) {
+            data_tr.len = len - SPIDEV_MAX_LEN * i;
+        }
+        else {
+            data_tr.len = SPIDEV_MAX_LEN;
+        }
+
+        data_tr.tx_buf = (unsigned long)(&data[SPIDEV_MAX_LEN * i]);
+
+        ret = ioctl(impl->spi_fd, SPI_IOC_MESSAGE(1), &data_tr);
+        if(ret < data_tr.len) return ST75256_ERROR;
+    }
 
     return ST75256_OK;
 }

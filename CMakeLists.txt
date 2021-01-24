@@ -7,8 +7,10 @@ set(CMAKE_C_STANDARD 11)
 set(SOURCES
     main.c
     st75256_impl.c
+    st75256_lvgl_impl.c
     user_tasks.c
     tasks/task_lvgl.c
+    tasks/task_hello.c
     lib/st75256_lcd/st75256_lcd.c
     lib/LittleVGL/src/lv_themes/lv_theme.c
     lib/LittleVGL/src/lv_themes/lv_theme_empty.c

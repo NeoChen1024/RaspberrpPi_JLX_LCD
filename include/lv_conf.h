@@ -53,7 +53,7 @@
 /* Dot Per Inch: used to initialize default sizes.
  * E.g. a button with width = LV_DPI / 2 -> half inch wide
  * (Not so important, you can adjust it to modify default sizes and spaces)*/
-#define LV_DPI              130     /*[px]*/
+#define LV_DPI              108     /*[px]*/
 
 /* The the real width of the display changes some default values:
  * default object sizes, layout of examples, etc.
@@ -80,7 +80,7 @@ typedef int16_t lv_coord_t;
 #define LV_MEM_CUSTOM      1
 #if LV_MEM_CUSTOM == 0
 /* Size of the memory used by `lv_mem_alloc` in bytes (>= 2kB)*/
-#  define LV_MEM_SIZE    (32U * 1024U)
+#  define LV_MEM_SIZE    (128U * 1024U)
 
 /* Compiler prefix for a big array declaration */
 #  define LV_MEM_ATTR
@@ -215,7 +215,7 @@ typedef void * lv_fs_drv_user_data_t;
 #endif
 
 /*1: Add a `user_data` to drivers and objects*/
-#define LV_USE_USER_DATA        0
+#define LV_USE_USER_DATA        1
 
 /*1: Show CPU usage and FPS count in the right bottom corner*/
 #define LV_USE_PERF_MONITOR     0
@@ -408,8 +408,8 @@ typedef void * lv_indev_drv_user_data_t;            /*Type of user data in the i
 
 /*Pixel perfect monospace font
  * http://pelulamu.net/unscii/ */
-#define LV_FONT_UNSCII_8     0
-#define LV_FONT_UNSCII_16     0
+#define LV_FONT_UNSCII_8     1
+#define LV_FONT_UNSCII_16     1
 
 /* Optionally declare your custom fonts here.
  * You can use these fonts as default font too
@@ -473,14 +473,14 @@ typedef void * lv_font_user_data_t;
 #define LV_USE_THEME_MONO        1
 
 #define LV_THEME_DEFAULT_INCLUDE            <stdint.h>      /*Include a header for the init. function*/
-#define LV_THEME_DEFAULT_INIT               lv_theme_material_init
+#define LV_THEME_DEFAULT_INIT               lv_theme_mono_init
 #define LV_THEME_DEFAULT_COLOR_PRIMARY      lv_color_hex(0x01a2b1)
 #define LV_THEME_DEFAULT_COLOR_SECONDARY    lv_color_hex(0x44d1b6)
-#define LV_THEME_DEFAULT_FLAG               LV_THEME_MATERIAL_FLAG_LIGHT
-#define LV_THEME_DEFAULT_FONT_SMALL         &lv_font_montserrat_14
-#define LV_THEME_DEFAULT_FONT_NORMAL        &lv_font_montserrat_14
-#define LV_THEME_DEFAULT_FONT_SUBTITLE      &lv_font_montserrat_14
-#define LV_THEME_DEFAULT_FONT_TITLE         &lv_font_montserrat_14
+#define LV_THEME_DEFAULT_FLAG               0
+#define LV_THEME_DEFAULT_FONT_SMALL         &lv_font_unscii_16
+#define LV_THEME_DEFAULT_FONT_NORMAL        &lv_font_unscii_16
+#define LV_THEME_DEFAULT_FONT_SUBTITLE      &lv_font_unscii_16
+#define LV_THEME_DEFAULT_FONT_TITLE         &lv_font_unscii_16
 
 /*=================
  *  Text settings

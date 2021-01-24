@@ -14,4 +14,9 @@ void *lvgl_tick_thread(void *arguments);
 extern pthread_t lvgl_task_thread_handle;
 void *lvgl_task_thread(void *arguments);
 
+int hello_task_init(void);
+int hello_task_deinit(void);
+extern pthread_t hello_thread_handle;
+void *hello_thread(void *arguments);
+
 #endif

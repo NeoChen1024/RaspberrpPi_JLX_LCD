@@ -19,6 +19,7 @@ void user_tasks_init(void) {
     }
 
     lvgl_task_init();
+    hello_task_init();
 }
 
 void user_tasks_loop(void) {
@@ -28,5 +29,6 @@ void user_tasks_loop(void) {
 }
 
 void user_tasks_deinit(void) {
+    hello_task_deinit();
     lvgl_task_deinit();
 }

@@ -33,5 +33,6 @@ typedef struct {
 st75256_ret_t st75256_init(st75256_t *lcd);
 st75256_ret_t st75256_set_contrast(st75256_t *lcd, uint16_t contrast);
 st75256_ret_t st75256_set_mode(st75256_t *lcd, st75256_mode_t mode);
+st75256_ret_t st75256_upload_data(st75256_t *lcd, uint8_t *data, uint8_t x_start, uint8_t x_end, uint8_t y_start, uint8_t y_end);
 
 #endif
