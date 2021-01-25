@@ -20,12 +20,19 @@ int hello_task_deinit(void) {
 pthread_t hello_thread_handle;
 void *hello_thread(void *arguments) {
     pthread_mutex_lock(&g_lvgl_mutex);
-    lv_obj_t * label2 = lv_label_create(lv_scr_act(), NULL);
-    lv_label_set_long_mode(label2, LV_LABEL_LONG_SROLL_CIRC);     /*Circular scroll*/
-    lv_label_set_anim_speed(label2, 3);
-    lv_obj_set_width(label2, 256);
-    lv_label_set_text(label2, "It is a circularly scrolling text. ");
-    lv_obj_align(label2, NULL, LV_ALIGN_IN_TOP_MID, 0, 30);
+
+    lv_style_t hello_label_style;
+    lv_style_init(&hello_label_style);
+    lv_style_set_text_font(&hello_label_style, LV_STATE_DEFAULT, &jf_dot_jiskan16);
+
+    lv_obj_t * hello_label = lv_label_create(lv_scr_act(), NULL);
+    lv_label_set_long_mode(hello_label, LV_LABEL_LONG_SROLL_CIRC);     /*Circular scroll*/
+    lv_label_set_anim_speed(hello_label, 4);
+    lv_obj_set_width(hello_label, 256);
+    lv_label_set_text(hello_label, "JFドットjiskan16 - 電子情報技術産業協会 / 安岡孝一氏 / 今村俊幸氏 / 花高信哉氏");
+    lv_obj_add_style(hello_label, LV_LABEL_PART_MAIN, &hello_label_style);
+    lv_obj_align(hello_label, NULL, LV_ALIGN_CENTER, 0, 0);
+
     pthread_mutex_unlock(&g_lvgl_mutex);
     while(g_running) {
         sleep(1);

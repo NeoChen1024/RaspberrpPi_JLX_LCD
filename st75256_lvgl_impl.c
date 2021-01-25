@@ -44,5 +44,4 @@ void _st75256_lv_impl_flush(lv_disp_drv_t *disp_drv, const lv_area_t *area, lv_c
     st75256_t *lcd = disp_drv->user_data;
     st75256_upload_data(lcd, (uint8_t *)color_p, area->x1, area->x2, area->y1, area->y2);
     lv_disp_flush_ready(disp_drv);
-    printf("FLUSH %d\n", area->y1);
 }

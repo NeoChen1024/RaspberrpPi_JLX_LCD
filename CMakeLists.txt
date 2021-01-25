@@ -9,6 +9,9 @@ set(SOURCES
     st75256_impl.c
     st75256_lvgl_impl.c
     user_tasks.c
+    fonts/jf_dot_jiskan24_2000.c
+    fonts/jf_dot_jiskan16.c
+    images/pixiv_87209173.c
     tasks/task_lvgl.c
     tasks/task_hello.c
     lib/st75256_lcd/st75256_lcd.c
