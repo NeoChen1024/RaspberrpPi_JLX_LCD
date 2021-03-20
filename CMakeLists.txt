@@ -7,7 +7,9 @@ set(CMAKE_C_STANDARD 11)
 set(SOURCES
     main.c
     st75256_impl.c
+    st7302_impl.c
     st75256_lvgl_impl.c
+    st7302_lvgl_impl.c
     user_tasks.c
     fonts/jf_dot_jiskan24_2000.c
     fonts/jf_dot_jiskan16.c
@@ -15,6 +17,7 @@ set(SOURCES
     tasks/task_lvgl.c
     tasks/task_hello.c
     lib/st75256_lcd/st75256_lcd.c
+    lib/st7302_lcd/st7302_lcd.c
     lib/LittleVGL/src/lv_themes/lv_theme.c
     lib/LittleVGL/src/lv_themes/lv_theme_empty.c
     lib/LittleVGL/src/lv_themes/lv_theme_material.c
@@ -131,6 +134,7 @@ set(SOURCES
 include_directories(
     include
     lib/st75256_lcd
+    lib/st7302_lcd
     lib/LittleVGL
 )
 

@@ -1,5 +1,5 @@
-#ifndef __lcd_impl_IMPL_H
-#define __lcd_impl_IMPL_H
+#ifndef __ST75256_IMPL_H
+#define __ST75256_IMPL_H
 
 // SPIDEV
 #include <fcntl.h>
@@ -22,11 +22,11 @@ typedef struct {
     struct gpiod_line *gpio_line_dc;
 } _st75256_impl_t;
 
-_st75256_impl_t *_lcd_impl_init(void);
-int _lcd_impl_deinit(_st75256_impl_t *handle);
-st75256_ret_t _lcd_impl_write_cmd(void *handle, uint8_t *cmd, uint8_t len);
-st75256_ret_t _lcd_impl_write_data(void *handle, uint8_t *data, uint16_t len);
-st75256_ret_t _lcd_impl_reset(void *handle);
-st75256_ret_t _lcd_impl_delay(void *handle, uint32_t usec);
+_st75256_impl_t *_st75256_impl_init(void);
+int _st75256_impl_deinit(_st75256_impl_t *handle);
+st75256_ret_t _st75256_impl_write_cmd(void *handle, uint8_t *cmd, uint8_t len);
+st75256_ret_t _st75256_impl_write_data(void *handle, uint8_t *data, uint16_t len);
+st75256_ret_t _st75256_impl_reset(void *handle);
+st75256_ret_t _st75256_impl_delay(void *handle, uint32_t usec);
 
 #endif

@@ -4,8 +4,8 @@
 
 #include "lvgl.h"
 
-#include "st75256_impl.h"
-#include "st75256_lvgl_impl.h"
+#include "st7302_impl.h"
+#include "st7302_lvgl_impl.h"
 
 #include "user_tasks.h"
 
@@ -13,17 +13,17 @@ extern uint8_t g_running;
 
 pthread_mutex_t g_lvgl_mutex = PTHREAD_MUTEX_INITIALIZER;
 
-st75256_t g_lcd = {
+st7302_t g_lcd = {
     .user_data = NULL,
     .cb = {
-        .write_cmd_cb = _lcd_impl_write_cmd,
-        .write_data_cb = _lcd_impl_write_data,
-        .reset_cb = _lcd_impl_reset,
-        .delay_cb = _lcd_impl_delay
+        .write_cmd_cb = _st7302_impl_write_cmd,
+        .write_data_cb = _st7302_impl_write_data,
+        .reset_cb = _st7302_impl_reset,
+        .delay_cb = _st7302_impl_delay
     }
 };
 
-#define LCD_BUF_SIZE (256 * 10)
+#define LCD_BUF_SIZE (250 * 24)
 
 lv_disp_buf_t g_lcd_disp_buf;
 lv_color_t g_lcd_buf[LCD_BUF_SIZE];
@@ -31,12 +31,10 @@ lv_color_t g_lcd_buf[LCD_BUF_SIZE];
 int lvgl_task_init(void) {
     int ret;
 
-    g_lcd.user_data = _lcd_impl_init();
+    g_lcd.user_data = _st7302_impl_init();
     if(g_lcd.user_data == NULL) return -1;
 
-    st75256_init(&g_lcd);
-    st75256_set_contrast(&g_lcd, 310);
-    st75256_set_mode(&g_lcd, ST75256_GREY);
+    st7302_init(&g_lcd);
 
     lv_init();
 
@@ -45,9 +43,9 @@ int lvgl_task_init(void) {
     lv_disp_drv_t disp_drv;
     lv_disp_drv_init(&disp_drv);
     disp_drv.buffer = &g_lcd_disp_buf;
-    disp_drv.set_px_cb = _st75256_lv_impl_set_px;
-    disp_drv.flush_cb = _st75256_lv_impl_flush;
-    disp_drv.rounder_cb = _st75256_lv_impl_rounder;
+    disp_drv.set_px_cb = _st7302_lv_impl_set_px;
+    disp_drv.flush_cb = _st7302_lv_impl_flush;
+    disp_drv.rounder_cb = _st7302_lv_impl_rounder;
     disp_drv.user_data = &g_lcd;
 
     lv_disp_drv_register(&disp_drv);

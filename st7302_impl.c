@@ -1,8 +1,8 @@
-#include "st75256_impl.h"
+#include "st7302_impl.h"
 
 #define SPIDEV_MAX_LEN 4096
 
-_st75256_impl_t *_st75256_impl_init(void) {
+_st7302_impl_t *_st7302_impl_init(void) {
     int spi_fd = open(CONFIG_SPIDEV_FILENAME, O_RDWR | O_SYNC);
     if(spi_fd < 0) return NULL;
 
@@ -22,7 +22,7 @@ _st75256_impl_t *_st75256_impl_init(void) {
     ret = ioctl(spi_fd, SPI_IOC_RD_BITS_PER_WORD, &spi_word_len);
     if(ret == -1) goto spi_err_out;
 
-    uint32_t spi_speed = 10000000; // 10MHz
+    uint32_t spi_speed = 16000000; // 16MHz
 
     ret = ioctl(spi_fd, SPI_IOC_WR_MAX_SPEED_HZ, &spi_speed);
     if(ret == -1) goto spi_err_out;
@@ -30,7 +30,7 @@ _st75256_impl_t *_st75256_impl_init(void) {
     ret = ioctl(spi_fd, SPI_IOC_RD_MAX_SPEED_HZ, &spi_speed);
     if(ret == -1) goto spi_err_out;
 
-    _st75256_impl_t *impl = malloc(sizeof(_st75256_impl_t));
+    _st7302_impl_t *impl = malloc(sizeof(_st7302_impl_t));
     if(impl == NULL) goto spi_err_out;
 
     impl->spi_fd = spi_fd;
@@ -63,18 +63,18 @@ spi_err_out:
     return NULL;
 }
 
-int _st75256_impl_deinit(_st75256_impl_t *handle) {
+int _st7302_impl_deinit(_st7302_impl_t *handle) {
     close(handle->spi_fd);
     gpiod_chip_close(handle->gpio_chip);
     free(handle);
     return 0;
 }
 
-st75256_ret_t _st75256_impl_write_cmd(void *handle, uint8_t *cmd, uint8_t len) {
-    _st75256_impl_t *impl = handle;
+st7302_ret_t _st7302_impl_write_cmd(void *handle, uint8_t *cmd, uint8_t len) {
+    _st7302_impl_t *impl = handle;
 
     int ret = gpiod_line_set_value(impl->gpio_line_dc, 0);
-    if(ret) return ST75256_ERROR;
+    if(ret) return ST7302_ERROR;
 
     struct spi_ioc_transfer cmd_tr = {
         .tx_buf = (unsigned long)cmd,
@@ -84,23 +84,23 @@ st75256_ret_t _st75256_impl_write_cmd(void *handle, uint8_t *cmd, uint8_t len) {
     };
 
     ret = ioctl(impl->spi_fd, SPI_IOC_MESSAGE(1), &cmd_tr);
-    if(ret < 1) return ST75256_ERROR;
+    if(ret < 1) return ST7302_ERROR;
 
     if(len > 1) {
         ret = gpiod_line_set_value(impl->gpio_line_dc, 1); // Set DC pin
-        if(ret) return ST75256_ERROR;
+        if(ret) return ST7302_ERROR;
         cmd_tr.tx_buf = (unsigned long)&cmd[1]; //2nd transfer
         cmd_tr.len = len - 1;
 
         ret = ioctl(impl->spi_fd, SPI_IOC_MESSAGE(1), &cmd_tr);
-        if(ret < len - 1) return ST75256_ERROR;
+        if(ret < len - 1) return ST7302_ERROR;
     }
 
-    return ST75256_OK;
+    return ST7302_OK;
 }
 
-st75256_ret_t _st75256_impl_write_data(void *handle, uint8_t *data, uint16_t len) {
-    _st75256_impl_t *impl = handle;
+st7302_ret_t _st7302_impl_write_data(void *handle, uint8_t *data, uint16_t len) {
+    _st7302_impl_t *impl = handle;
 
     int ret = gpiod_line_set_value(impl->gpio_line_dc, 1);
 
@@ -123,31 +123,31 @@ st75256_ret_t _st75256_impl_write_data(void *handle, uint8_t *data, uint16_t len
         data_tr.tx_buf = (unsigned long)(&data[SPIDEV_MAX_LEN * i]);
 
         ret = ioctl(impl->spi_fd, SPI_IOC_MESSAGE(1), &data_tr);
-        if(ret < data_tr.len) return ST75256_ERROR;
+        if(ret < data_tr.len) return ST7302_ERROR;
     }
 
-    return ST75256_OK;
+    return ST7302_OK;
 }
 
-st75256_ret_t _st75256_impl_reset(void *handle) {
-    _st75256_impl_t *impl = handle;
+st7302_ret_t _st7302_impl_reset(void *handle) {
+    _st7302_impl_t *impl = handle;
 
     usleep(10 * 1000);
 
     int ret = gpiod_line_set_value(impl->gpio_line_res, 0);
-    if(ret) return ST75256_ERROR;
+    if(ret) return ST7302_ERROR;
 
     usleep(10 * 1000);
 
     ret = gpiod_line_set_value(impl->gpio_line_res, 1);
-    if(ret) return ST75256_ERROR;
+    if(ret) return ST7302_ERROR;
 
     usleep(10 * 1000);
 
-    return ST75256_OK;
+    return ST7302_OK;
 }
 
-st75256_ret_t _st75256_impl_delay(void *handle, uint32_t usec) {
+st7302_ret_t _st7302_impl_delay(void *handle, uint32_t usec) {
     usleep(usec);
-    return ST75256_OK;
+    return ST7302_OK;
 }
