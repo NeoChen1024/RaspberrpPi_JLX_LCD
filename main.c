@@ -8,6 +8,6 @@ int main() {
     user_tasks_loop();
     user_tasks_deinit();
 
-    printf("Hello World!!\n");
+    printf("Monitor exit...\n");
     return 0;
 }

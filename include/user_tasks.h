@@ -19,4 +19,9 @@ int hello_task_deinit(void);
 extern pthread_t hello_thread_handle;
 void *hello_thread(void *arguments);
 
+int load_task_init(void);
+int load_task_deinit(void);
+extern pthread_t load_thread_handle;
+void *load_thread(void *arguments);
+
 #endif

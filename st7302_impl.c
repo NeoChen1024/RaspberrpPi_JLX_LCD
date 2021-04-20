@@ -137,12 +137,12 @@ st7302_ret_t _st7302_impl_reset(void *handle) {
     int ret = gpiod_line_set_value(impl->gpio_line_res, 0);
     if(ret) return ST7302_ERROR;
 
-    usleep(10 * 1000);
+    usleep(50 * 1000);
 
     ret = gpiod_line_set_value(impl->gpio_line_res, 1);
     if(ret) return ST7302_ERROR;
 
-    usleep(10 * 1000);
+    usleep(200 * 1000);
 
     return ST7302_OK;
 }
