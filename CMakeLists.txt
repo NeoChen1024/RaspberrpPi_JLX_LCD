@@ -5,12 +5,12 @@ project(lcd_jlx C)
 set(CMAKE_C_STANDARD 11)
 
 set(SOURCES
-    "main.c"
-    "st75256_impl.c"
-    "st7302_impl.c"
-    "st75256_lvgl_impl.c"
-    "st7302_lvgl_impl.c"
-    "user_tasks.c"
+    "src/main.c"
+    "src/st75256_impl.c"
+    "src/st7302_impl.c"
+    "src/st75256_lvgl_impl.c"
+    "src/st7302_lvgl_impl.c"
+    "src/user_tasks.c"
     "fonts/jf_dot_jiskan24_2000.c"
     "fonts/jf_dot_jiskan16.c"
     "fonts/unica_one_12.c"
