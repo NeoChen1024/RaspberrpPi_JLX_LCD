@@ -9,8 +9,6 @@
 
 #include "user_tasks.h"
 
-extern uint8_t g_running;
-
 pthread_mutex_t g_lvgl_mutex = PTHREAD_MUTEX_INITIALIZER;
 
 st7302_t g_lcd = {

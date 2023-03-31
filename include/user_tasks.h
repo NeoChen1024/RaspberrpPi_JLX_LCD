@@ -2,6 +2,10 @@
 #define __USER_TASKS_H
 
 #include <pthread.h>
+#include <stdint.h>
+
+extern volatile uint8_t g_running;
+extern pthread_mutex_t g_lvgl_mutex;
 
 void user_tasks_init(void);
 void user_tasks_loop(void);

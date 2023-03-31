@@ -8,9 +8,6 @@
 
 #include "user_tasks.h"
 
-extern uint8_t g_running;
-extern pthread_mutex_t g_lvgl_mutex;
-
 int load_task_init(void) {
     int ret = pthread_create(&load_thread_handle, NULL, load_thread, NULL);
     ret = pthread_setname_np(load_thread_handle, "LOAD_THR");
@@ -31,7 +28,7 @@ void *load_thread(void *arguments) {
     lv_obj_set_width(load_label, 150);
     lv_label_set_text(load_label, "LOAD AVG. --.--/--.--/--.--");
     lv_obj_add_style(load_label, LV_LABEL_PART_MAIN, &load_label_style);
-    lv_obj_align(load_label, NULL, LV_ALIGN_IN_TOP_LEFT, 0, 8);
+    lv_obj_align(load_label, NULL, LV_ALIGN_IN_TOP_LEFT, 0, 16);
 
     pthread_mutex_unlock(&g_lvgl_mutex);
 
@@ -47,7 +44,7 @@ void *load_thread(void *arguments) {
         pthread_mutex_lock(&g_lvgl_mutex);
 
         lv_label_set_text(load_label, load_buf);
-        lv_obj_align(load_label, NULL, LV_ALIGN_IN_TOP_LEFT, 0, 8);
+        lv_obj_align(load_label, NULL, LV_ALIGN_IN_TOP_LEFT, 0, 16);
         pthread_mutex_unlock(&g_lvgl_mutex);
         sleep(1);
     }

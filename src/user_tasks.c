@@ -4,7 +4,7 @@
 
 #include "user_tasks.h"
 
-uint8_t g_running = 1;
+volatile uint8_t g_running = 1;
 
 void _user_signal_handler(int signo) {
     if(signo == SIGINT) {
